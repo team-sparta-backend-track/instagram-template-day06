@@ -26,9 +26,6 @@ public class FileStore {
 
     // TODO: 2. MultipartFile을 받아 로컬 디스크에 저장하고 고유한 파일명(UUID)을 반환하는 메서드를 완성하세요
     public String storeFile(MultipartFile multipartFile) throws IOException {
-        if (multipartFile.isEmpty()) {
-            return null;
-        }
 
         // 1. 원본 파일명 추출
 
