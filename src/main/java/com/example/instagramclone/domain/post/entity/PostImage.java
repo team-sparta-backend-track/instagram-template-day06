@@ -7,9 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Builder;
 
-// TODO: 1. 엔티티 매핑 애노테이션을 작성하세요 (@Entity, @Table 등)
 @Entity
-// TODO: 2. 테이블 이름을 "post_images"로 설정하세요
 @Table(name = "post_images")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,13 +17,18 @@ public class PostImage extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // TODO: 3. imageUrl과 imgOrder 필드를 작성하세요
-    private String imageUrl;
-    private Integer imgOrder;
+    private String imageUrl; // 사진의 접속 경로
+    private Integer imgOrder; // 사진 순서
 
-    // TODO: 4. Post와의 다대일 연관관계를 설정하세요 (필수: FetchType.LAZY)
-//    private Post post;
+    // 어느 게시물에 속해있는가? (사진 N : 게시물 1)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "post_id", nullable = false) // 실제 DB의 외래 키(FK)
+    private Post post;
 
-    // TODO: 5. 생성자를 작성하세요 (@Builder 활용)
-
+    @Builder
+    public PostImage(String imageUrl, Integer imgOrder, Post post) {
+        this.imageUrl = imageUrl;
+        this.imgOrder = imgOrder;
+        this.post = post;
+    }
 }

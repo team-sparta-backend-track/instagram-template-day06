@@ -24,6 +24,10 @@ spring:
         format_sql: false
         show_sql: false
     defer-datasource-initialization: true
+  servlet:
+    multipart:
+      max-file-size: 10MB      # 파일 1개당 최대 허용 용량
+      max-request-size: 50MB   # 요청 1번당(파일 여러 개 합쳐서) 최대 허용 용량
 
 #mybatis:
 #  configuration:
@@ -49,6 +53,7 @@ logging:
 file:
   upload:
     location: ${user.home}/instagram-clone/uploads/
+    allowed-extensions: .jpg,.jpeg,.png,.gif,.webp,.heic # 콤마로 구분하여 작성
 
 jwt:
   secret-key: L6h/xMxGO53HQmR/OB99qR/y0kTr2CAyaI5RqBIX184=  # 토큰발급시와 토큰위조검사시 사용할 서명

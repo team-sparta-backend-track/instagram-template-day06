@@ -48,6 +48,14 @@ public class GlobalExceptionHandler {
     }
 
 
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ApiResponse<Void>> handleMaxUploadSizeExceededException(Exception e, HttpServletRequest request) {
+        log.warn("MaxUploadSizeExceededException : {}", e.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.PAYLOAD_TOO_LARGE)
+                .body(ApiResponse.fail(buildErrorResponse(CommonErrorCode.INVALID_INPUT_VALUE, "파일 업로드 용량이 초과되었습니다.", request.getRequestURI())));
+    }
+
     /**
      * 위에서 처리하지 못한 나머지 모든 예외(Exception)를 처리합니다.
      * 예상치 못한 서버 에러(NullPointerException 등)가 여기에 해당합니다.
