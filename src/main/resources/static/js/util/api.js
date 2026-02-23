@@ -11,12 +11,17 @@ function createAuthHeader() {
 
 // 공통 fetch 함수 (ApiResponse 처리 포함)
 export async function fetchWithAuth(url, options = {}) {
-  // 기본 헤더에 인증 헤더 추가
+  // 기본 헤더 세팅
   const headers = {
-    'Content-Type': 'application/json', // 기본적으로 JSON 통신이라 가정
     ...options.headers,
     ...createAuthHeader(),
   };
+
+  // FormData 전송 시 브라우저가 자동으로 multipart/form-data와 boundary를 설정하도록
+  // Content-Type을 고정된 값 (application/json) 으로 덮어쓰지 않습니다.
+  if (!(options.body instanceof FormData) && !headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json';
+  }
 
   try {
     const response = await fetch(url, {
@@ -39,8 +44,8 @@ export async function fetchWithAuth(url, options = {}) {
     // success가 true이면 data를 반환
     if (json.success) {
       return json.data;
-    } 
-    
+    }
+
     // success가 false이면 에러를 던짐 (ErrorResponse 객체 포함)
     throw new Error(json.error?.message || '알 수 없는 에러가 발생했습니다.');
 
