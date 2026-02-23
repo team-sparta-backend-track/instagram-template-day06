@@ -62,10 +62,8 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    // TODO: 2. 중복 체크 로직을 별도 메소드로 분리하세요
 
 
-    // TODO: 3. 검증 로직을 구현하세요 (checkDuplicate)
     public boolean checkDuplicate(String type, String value) {
         return switch (type) {
             case "username" -> !memberRepository.existsByUsername(value);
@@ -76,6 +74,10 @@ public class MemberService {
     }
 
 
-
+    // 타 도메인(Service)에서 내부적인 비즈니스 로직을 위해 Member 엔티티가 필요할 때 호출
+    public Member getMemberById(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+    }
 
 }
